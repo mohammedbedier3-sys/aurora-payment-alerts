@@ -1,8 +1,24 @@
 {
   "accounts": {
+    "act_1022085331321637": {
+      "name": "Mohammed Bedier",
+      "status": 2
+    },
+    "act_1023903676213617": {
+      "name": "Squad",
+      "status": 1
+    },
     "act_1058158296552642": {
       "name": "Moments",
       "status": 1
+    },
+    "act_1106174182905890": {
+      "name": "Business- Ad Account",
+      "status": 1
+    },
+    "act_1128873134128514": {
+      "name": "Dopay Backup",
+      "status": 2
     },
     "act_1166696971605528": {
       "name": "EVA Senses",
@@ -12,8 +28,28 @@
       "name": "Grounds 2",
       "status": 1
     },
+    "act_1298995850226988": {
+      "name": "BellCom - EVA",
+      "status": 1
+    },
+    "act_132150234771775": {
+      "name": "Freelancing Ad account",
+      "status": 1
+    },
+    "act_1322950448207351": {
+      "name": "Wndo",
+      "status": 1
+    },
     "act_1340123591114811": {
       "name": "EVA Senses - KSA",
+      "status": 1
+    },
+    "act_1372297597555728": {
+      "name": "TC - Eva Cosmetics",
+      "status": 1
+    },
+    "act_1442368523143299": {
+      "name": "Perfecta",
       "status": 1
     },
     "act_1469275297714875": {
@@ -24,36 +60,148 @@
       "name": "NOW SA",
       "status": 1
     },
+    "act_1514489192272269": {
+      "name": "Candy Room",
+      "status": 1
+    },
+    "act_153198826503159": {
+      "name": "Waz Gallery",
+      "status": 1
+    },
+    "act_1611452199005430": {
+      "name": "Sara",
+      "status": 1
+    },
+    "act_1689913115154513": {
+      "name": "Boom Room EG",
+      "status": 1
+    },
     "act_1841211936672935": {
       "name": "Eva Fluoro",
+      "status": 1
+    },
+    "act_2077547815890802": {
+      "name": "2077547815890802",
+      "status": 1
+    },
+    "act_2349722978611204": {
+      "name": "Hemam",
+      "status": 1
+    },
+    "act_247300704": {
+      "name": "Eman Hylooz",
+      "status": 1
+    },
+    "act_252740821452429": {
+      "name": "Mohammed Bedier",
+      "status": 1
+    },
+    "act_27824055600548219": {
+      "name": "Argaam on",
       "status": 1
     },
     "act_2800452263620704": {
       "name": "Eva Smokers",
       "status": 1
     },
+    "act_319577247509396": {
+      "name": "319577247509396",
+      "status": 1
+    },
+    "act_359744324907950": {
+      "name": "Argaam",
+      "status": 1
+    },
     "act_4010511402522996": {
       "name": "Eva One Cream",
+      "status": 1
+    },
+    "act_423430391719130": {
+      "name": "Dopay New",
+      "status": 1
+    },
+    "act_465405631788534": {
+      "name": "Mogo Egypt",
+      "status": 1
+    },
+    "act_471077809386572": {
+      "name": "Axelerate",
       "status": 1
     },
     "act_524152413613239": {
       "name": "M-Fitaihi",
       "status": 1
     },
+    "act_551402865740202": {
+      "name": "Teem",
+      "status": 1
+    },
     "act_557587864069567": {
       "name": "Eternal JEWEL",
+      "status": 1
+    },
+    "act_569643485546808": {
+      "name": "NOW Offers",
+      "status": 1
+    },
+    "act_578700929644364": {
+      "name": "EVA Pharma ad account",
       "status": 1
     },
     "act_595668430075029": {
       "name": "Teem App",
       "status": 1
     },
+    "act_608081162380072": {
+      "name": "dopay new test",
+      "status": 1
+    },
+    "act_666525809619520": {
+      "name": "Baby Jewels",
+      "status": 1
+    },
+    "act_686060948875085": {
+      "name": "Hum-Hum",
+      "status": 1
+    },
+    "act_708854762907241": {
+      "name": "Limitless Naturals EG",
+      "status": 3
+    },
     "act_738703538422919": {
       "name": "Grounds",
       "status": 1
     },
+    "act_750928642309492": {
+      "name": "Eva Cosmetics Careers - Rita",
+      "status": 101
+    },
+    "act_784819952288728": {
+      "name": "Movart Ad Account",
+      "status": 1
+    },
+    "act_811629645355929": {
+      "name": "dopayEG (Read-Only)",
+      "status": 1
+    },
+    "act_861931747486718": {
+      "name": "Freelance 1",
+      "status": 2
+    },
     "act_871511189230803": {
       "name": "Grand Heights",
+      "status": 1
+    },
+    "act_879232522191974": {
+      "name": "Corporate",
+      "status": 101
+    },
+    "act_930683127271715": {
+      "name": "Brace Dental Care",
+      "status": 3
+    },
+    "act_957837131411123": {
+      "name": "Patron",
       "status": 1
     }
   },
