@@ -2,11 +2,15 @@
 """
 Two jobs, run together every 5 minutes:
 
-1. PAYMENT/STATUS MONITOR - checks every ad account under the Aurora for
-   Advertising Business Manager for account-status problems (payment
+1. PAYMENT/STATUS MONITOR - checks every ad account the connected Meta token
+   has access to (not scoped to one Business Manager - discovered fresh via
+   /me/adaccounts on every run) for account-status problems (payment
    failures, disabled accounts, pending review, etc.) and sends a Telegram
    message only when an account newly enters or leaves a problem state.
-   Silent on every run where nothing changed.
+   Silent on every run where nothing changed. Note: on the very first run
+   after widening scope, any account that is *already* in a problem state
+   (e.g. long-closed accounts) will generate one baseline alert, since there
+   is no prior state to compare against - after that, it's purely change-based.
 
 2. COMMAND HANDLER - polls for new Telegram messages from the account owner
    and acts on a small fixed set of commands (/accounts, /campaigns,
@@ -33,7 +37,6 @@ from pathlib import Path
 
 import requests
 
-AURORA_BUSINESS_ID = "321924497251498"
 GRAPH_API = "https://graph.facebook.com/v21.0"
 STATE_FILE = Path(__file__).parent / "state.json"
 
@@ -52,7 +55,7 @@ PROBLEM_STATUSES = {
 
 HELP_TEXT = (
     "Commands:\n"
-    "/accounts - list all Aurora accounts and their status\n"
+    "/accounts - list all your ad accounts and their status\n"
     "/campaigns <account name or part of it> - list that account's active campaigns\n"
     "/pause <campaign name or part of it> - pause a campaign (asks to confirm by ID if more than one matches)\n"
     "/resume <campaign name or part of it> - resume a paused campaign\n"
@@ -89,10 +92,12 @@ def meta_post(path: str, data: dict) -> dict:
     return resp.json()
 
 
-def get_aurora_accounts() -> list[dict]:
+def get_all_accounts() -> list[dict]:
+    """Every ad account the connected token has access to, across every
+    Business Manager and personal account - not scoped to one business."""
     accounts = []
     params = {"fields": "id,name,account_status,disable_reason", "limit": 200}
-    path = f"{AURORA_BUSINESS_ID}/owned_ad_accounts"
+    path = "me/adaccounts"
     while True:
         data = meta_get(path, params)
         accounts.extend(data.get("data", []))
@@ -167,11 +172,11 @@ def save_state(state: dict) -> None:
 def run_status_monitor(state: dict) -> bool:
     """Returns True if state changed."""
     try:
-        accounts = get_aurora_accounts()
+        accounts = get_all_accounts()
     except requests.HTTPError as e:
         body = e.response.text if e.response is not None else str(e)
         send_telegram(
-            f"⚠️ Aurora payment-alert check failed to run: could not reach "
+            f"⚠️ Payment-alert check failed to run: could not reach "
             f"Meta Graph API ({e}). This likely means the Meta access token "
             f"has expired and needs refreshing.\n\nDetails: {body[:300]}"
         )
@@ -230,10 +235,15 @@ def run_status_monitor(state: dict) -> bool:
 
 
 def find_campaigns(accounts: list[dict], query: str) -> list[dict]:
-    """Search active/paused campaigns across all accounts by name substring."""
+    """Search active/paused campaigns across all ACTIVE accounts by name
+    substring. Skips non-active accounts (closed/disabled/etc.) - they won't
+    have manageable campaigns and searching them would just waste API calls
+    across 50+ accounts."""
     query_lower = query.strip().lower()
     matches = []
     for acct in accounts:
+        if acct.get("account_status") != 1:
+            continue
         try:
             campaigns = get_active_campaigns(acct["id"])
         except requests.HTTPError:
@@ -264,7 +274,8 @@ def handle_command(text: str, accounts: list[dict]) -> str:
         for a in accounts:
             status = PROBLEM_STATUSES.get(a.get("account_status"), "ACTIVE")
             lines.append(f"- {a.get('name')} ({a['id']}): {status}")
-        return "Aurora accounts:\n" + "\n".join(lines)
+        text = "Your ad accounts:\n" + "\n".join(lines)
+        return text[:4000]  # stay under Telegram's 4096-char message limit
 
     if cmd == "/campaigns":
         if not arg:
@@ -339,7 +350,7 @@ def run_command_handler(state: dict) -> bool:
             continue
 
         if accounts is None:
-            accounts = get_aurora_accounts()
+            accounts = get_all_accounts()
 
         try:
             reply = handle_command(msg["text"], accounts)
