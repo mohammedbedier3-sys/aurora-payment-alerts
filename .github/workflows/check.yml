@@ -2,7 +2,7 @@ name: Check Aurora ad accounts for payment errors
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch: {} # lets you trigger a manual run from the Actions tab
 
 permissions:
