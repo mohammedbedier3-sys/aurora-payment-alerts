@@ -1,8 +1,21 @@
 # Ad Account Payment Alerts
 
-Two things, both running every 5 minutes on GitHub Actions' free tier (public
-repo = unlimited free minutes) — no server, no Anthropic API usage, no AI
-involved in either job:
+Two things, both scheduled every 5 minutes on GitHub Actions' free tier
+(public repo = unlimited free minutes) — no server, no Anthropic API usage, no
+AI involved in either job.
+
+**⚠ Real detection latency is hours, not minutes.** GitHub does not guarantee
+scheduled (`cron`) workflows run at the requested time — its own docs state
+the `schedule` event "can be delayed during periods of high loads... some
+queued jobs may be dropped." In practice this repo's `*/5 * * * *` schedule
+has run a median of ~3 hours apart (sometimes 5+ hours), not every 5 minutes.
+This means a payment error that starts and resolves *between* two checks will
+never be seen — this is a known, accepted limitation of GitHub's free
+scheduled-workflow tier, not a bug in `check_accounts.py`. If a transient
+error needs to be caught reliably, this monitor would need an external cron
+trigger (e.g. cron-job.org calling the GitHub API) instead of GitHub's own
+`schedule:` trigger — not currently set up, by choice, to keep this 100% free
+with no external service dependency.
 
 1. **Payment/status monitor** — checks **every ad account the connected
    Meta token has access to** (discovered fresh via `/me/adaccounts` on
